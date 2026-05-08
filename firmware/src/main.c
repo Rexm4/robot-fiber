@@ -1,0 +1,48 @@
+#include <freertos/FreeRTOS.h>
+#include <stdio.h>
+
+#include "buttons.h"
+#include "comms.h"
+#include "infrared.h"
+#include "menu.h"
+#include "motors.h"
+#include "oled.h"
+#include "ultrasonic.h"
+
+#include "mode_linear_follower.h"
+#include "mode_obstacle_avoider.h"
+#include "mode_wifi.h"
+
+void app_main() {
+  vTaskDelay(pdMS_TO_TICKS(3000));
+  /*
+  motors_init();
+
+  ultrasonic_init();
+
+  infrared_init();
+
+  oled_init();
+
+  buttons_init();
+*/
+
+  //RobotMode mode = menu_get_mode();
+
+  switch (1) {  // mode
+    case 1:     //MODE_LINEARFOLLOWER
+      //linear_follower_run();
+      printf("Running linear follower mode\n");
+      break;
+    case 2:  //MODE_OBSTACLEAVOIDER
+      //obstacle_avoider_run();
+      printf("Running obstacle avoider mode\n");
+      break;
+    case 3:  //MODE_WIFI
+      //wifi_run();
+      printf("Running wifi mode\n");
+      break;
+    default:
+      printf("ERROR Unknown mode\n");
+  }
+}
