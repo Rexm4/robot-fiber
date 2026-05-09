@@ -14,7 +14,7 @@
 #include "mode_wifi.h"
 
 void app_main() {
-  vTaskDelay(pdMS_TO_TICKS(3000));
+  vTaskDelay(pdMS_TO_TICKS(5000));
   /*
   motors_init();
 
@@ -26,6 +26,19 @@ void app_main() {
 
   buttons_init();
 */
+
+  infrared_init();
+  infrared_calibrate_analog(20, 5000);
+
+  ir_reading_t ir;
+
+  for (;;) {
+    infrared_read(&ir);
+    printf("[IR] analog_raw: %4d | gray_value: %.4f | line_detected: %d\n", ir.analog_raw,
+           ir.gray_value, ir.line_detected);
+
+    vTaskDelay(pdMS_TO_TICKS(300));
+  }
 
   //RobotMode mode = menu_get_mode();
 
