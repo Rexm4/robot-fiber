@@ -1,10 +1,11 @@
 #include "infrared.h"
+
 #include <driver/gpio.h>
 #include <esp_adc/adc_oneshot.h>
+#include <esp_log.h>
 #include <freertos/FreeRTOS.h>
 #include <freertos/task.h>
 #include <stdio.h>
-#include "esp_log.h"
 
 static const char* TAG = "IR";
 
@@ -20,7 +21,7 @@ void infrared_init() {
       .intr_type    = GPIO_INTR_DISABLE,
   };
   gpio_config(&config);
-  ESP_LOGI(TAG, "Digital mode initialized GPIO %d", IR_DIGITAL_PIN);
+  ESP_LOGI(TAG, "Digital mode initialized GPIO%d", IR_DIGITAL_PIN);
 
   adc_oneshot_unit_init_cfg_t unit_config = {
       .unit_id  = IR_ADC_UNIT,
@@ -40,7 +41,7 @@ void infrared_init() {
 void infrared_read(ir_reading_t* out) {
   out->digital_value = 0;
   out->analog_raw    = 0;
-  out->gray_value    = 0.0;
+  out->gray_value    = 0.0f;
   out->line_detected = false;
 
   int level          = gpio_get_level(IR_DIGITAL_PIN);  // 0 = white | 1 = black

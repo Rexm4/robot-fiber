@@ -18,26 +18,23 @@ void app_main() {
   /*
   motors_init();
 
-  ultrasonic_init();
-
-  infrared_init();
-
   oled_init();
 
   buttons_init();
 */
 
   infrared_init();
-  infrared_calibrate_analog(20, 5000);
-
+  //infrared_calibrate_analog(20, 5000);
   ir_reading_t ir;
+
+  ultrasonic_init();
 
   for (;;) {
     infrared_read(&ir);
-    printf("[IR] analog_raw: %4d | gray_value: %.4f | line_detected: %d\n", ir.analog_raw,
-           ir.gray_value, ir.line_detected);
+    printf("[IR] analog_raw: %4d | gray_value: %.2f | line_detected: %d || [ULTRASONIC] CM: %.2f\n",
+           ir.analog_raw, ir.gray_value, ir.line_detected, ultrasonic_get_cm());
 
-    vTaskDelay(pdMS_TO_TICKS(300));
+    vTaskDelay(pdMS_TO_TICKS(1000));
   }
 
   //RobotMode mode = menu_get_mode();
