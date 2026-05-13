@@ -8,6 +8,8 @@ static const char* TAG = "OLED";
 
 static uint8_t s_buffer[OLED_PAGES][OLED_WIDTH];
 
+static i2c_master_dev_handle_t s_dev_handle;
+
 static const uint8_t INIT_SEQ[] = {
     0x00,       /* byte de control: Co=0, D/C#=0  → todos son comandos */
     0xAE,       /* Display OFF                                         */
@@ -35,6 +37,7 @@ static const uint8_t SET_FULL_PAGE[] = {
 };
 
 esp_err_t oled_init(i2c_master_bus_handle_t bus_handle, i2c_master_dev_handle_t* dev_handle) {
+
   i2c_device_config_t config = {
       .dev_addr_length = I2C_ADDR_BIT_7,
       .device_address  = OLED_I2C_ADDR,
@@ -54,6 +57,7 @@ esp_err_t oled_init(i2c_master_bus_handle_t bus_handle, i2c_master_dev_handle_t*
   }
 
   oled_clear();
+  s_dev_handle = *dev_handle;
   ESP_LOGI(TAG, "Successfully initialized");
   return ESP_OK;
 }
@@ -62,8 +66,8 @@ void oled_clear() {
   memset(s_buffer, 0x00, sizeof(s_buffer));
 }
 
-esp_err_t oled_flush(i2c_master_dev_handle_t dev_handle) {
-  esp_err_t ret = i2c_master_transmit(dev_handle, SET_FULL_PAGE, sizeof(SET_FULL_PAGE), -1);
+esp_err_t oled_flush(void) {
+  esp_err_t ret = i2c_master_transmit(s_dev_handle, SET_FULL_PAGE, sizeof(SET_FULL_PAGE), -1);
   if (ret != ESP_OK) {
     ESP_LOGE(TAG, "Failed to set page: %s", esp_err_to_name(ret));
     return ret;
@@ -75,7 +79,7 @@ esp_err_t oled_flush(i2c_master_dev_handle_t dev_handle) {
     memcpy(&tx_buffer[1 + p * OLED_WIDTH], s_buffer[p], OLED_WIDTH);
   }
 
-  ret = i2c_master_transmit(dev_handle, tx_buffer, sizeof(tx_buffer), -1);
+  ret = i2c_master_transmit(s_dev_handle, tx_buffer, sizeof(tx_buffer), -1);
   if (ret != ESP_OK) {
     ESP_LOGE(TAG, "Failed to transmit buffer: %s", esp_err_to_name(ret));
     return ret;

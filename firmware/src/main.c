@@ -38,14 +38,9 @@ void app_main() {
   vTaskDelay(pdMS_TO_TICKS(3000));
   /*
   motors_init();
-  buttons_init();
   */
 
-  i2c_master_bus_handle_t bus_handle;
-  i2c_bus_create(&bus_handle);
-
-  i2c_master_dev_handle_t oled_handle;
-  oled_init(bus_handle, &oled_handle);
+  buttons_init();
 
   infrared_init();
   //infrared_calibrate_analog(20, 5000);
@@ -53,17 +48,13 @@ void app_main() {
 
   ultrasonic_init();
 
-  // Splash
-  oled_clear();
-  oled_draw_rect(0, 0, 127, 63, 1);
-  oled_draw_string(36, 2, "FIBER", 2, 1);
-  oled_draw_string(36, 18, "ROBOT", 2, 1);
-  oled_draw_string(20, 38, "Selecciona modo", 1, 1);
-  oled_draw_hline(10, 34, 108, 1);
-  oled_draw_string(45, 50, "[ OK ]", 1, 1);
-  oled_flush(oled_handle);
+  i2c_master_bus_handle_t bus_handle;
+  i2c_bus_create(&bus_handle);
 
-  for (;;) {
+  i2c_master_dev_handle_t oled_handle;
+  oled_init(bus_handle, &oled_handle);
+  /*
+   for (;;) {
 
     infrared_read(&ir);
 
@@ -71,19 +62,20 @@ void app_main() {
            ir.analog_raw, ir.gray_value, ir.line_detected, ultrasonic_get_cm());
     vTaskDelay(pdMS_TO_TICKS(1000));
   }
+ */
 
-  //RobotMode mode = menu_get_mode();
+  RobotMode mode = menu_get_mode();
 
-  switch (1) {  // mode
-    case 1:     //MODE_LINEARFOLLOWER
+  switch (mode) {
+    case MODE_LINEAR_FOLLOWER:
       //linear_follower_run();
       printf("Running linear follower mode\n");
       break;
-    case 2:  //MODE_OBSTACLEAVOIDER
+    case MODE_OBSTACLE_AVOIDER:
       //obstacle_avoider_run();
       printf("Running obstacle avoider mode\n");
       break;
-    case 3:  //MODE_WIFI
+    case MODE_WIFI:
       //wifi_run();
       printf("Running wifi mode\n");
       break;
