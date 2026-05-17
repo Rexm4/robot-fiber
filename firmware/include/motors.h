@@ -57,12 +57,12 @@ esp_err_t motors_init(void);
 void motor_set(motor_id_t id, motor_dir_t dir, uint8_t speed);
 
 void motor_stop(motor_id_t id);
-void motro_break(motor_id_t id);
+void motro_brake(motor_id_t id);
 
-void motor_forward(uint8_t speed);
-void motor_backwards(uint8_t speed);
-void motor_turn_left(uint8_t speed);
-void motor_turn_right(uint8_t speed);
+void motors_forward(uint8_t speed);
+void motors_backwards(uint8_t speed);
+void motors_turn_left(uint8_t speed);
+void motors_turn_right(uint8_t speed);
 
 void stop_all(void);
 

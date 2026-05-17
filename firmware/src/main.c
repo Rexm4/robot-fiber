@@ -60,17 +60,13 @@ void app_main() {
     //printf("[IR] analog_raw: %4d | gray_value: %.2f | line_detected: %d || [ULTRASONIC] CM: %.2f\n",
     //       ir.analog_raw, ir.gray_value, ir.line_detected, ultrasonic_get_cm());
 
-    motor_set(MOTOR_FR, MOTOR_DIR_FORWARD, 40);
+    motors_forward(60);
     vTaskDelay(pdMS_TO_TICKS(2000));
-    motor_set(MOTOR_FR, MOTOR_DIR_BACKWARD, 40);
+    motors_backwards(60);
     vTaskDelay(pdMS_TO_TICKS(2000));
-
-    motor_set(MOTOR_FR, MOTOR_DIR_FORWARD, 90);
+    motors_turn_left(60);
     vTaskDelay(pdMS_TO_TICKS(2000));
-    motor_set(MOTOR_FR, MOTOR_DIR_BACKWARD, 90);
-    vTaskDelay(pdMS_TO_TICKS(2000));
-
-    motor_set(MOTOR_FR, MOTOR_DIR_FORWARD, 0);
+    motors_turn_right(60);
     vTaskDelay(pdMS_TO_TICKS(2000));
   }
 

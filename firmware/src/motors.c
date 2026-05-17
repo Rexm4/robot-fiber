@@ -104,3 +104,50 @@ void motor_set(motor_id_t id, motor_dir_t dir, uint8_t speed) {
     gpio_set_level(s_motors[id].in2_pin, 1);
   }
 }
+
+void motor_stop(motor_id_t id) {
+  if (!g_initialized || id >= MOTOR_COUNT)
+    return;
+
+  ledc_set_duty(LEDC_LOW_SPEED_MODE, s_motors[id].ledc_channel, 0);
+  ledc_update_duty(LEDC_LOW_SPEED_MODE, s_motors[id].ledc_channel);
+  gpio_set_level(s_motors[id].in1_pin, 0);
+  gpio_set_level(s_motors[id].in2_pin, 0);
+}
+
+void motor_brake(motor_id_t id) {
+  if (!g_initialized || id >= MOTOR_COUNT)
+    return;
+
+  ledc_set_duty(LEDC_LOW_SPEED_MODE, s_motors[id].ledc_channel, LEDC_DUTY_MAX);
+  ledc_update_duty(LEDC_LOW_SPEED_MODE, s_motors[id].ledc_channel);
+  gpio_set_level(s_motors[id].in1_pin, 1);
+  gpio_set_level(s_motors[id].in2_pin, 1);
+}
+
+void motors_forward(uint8_t speed) {
+  for (int i = 0; i < MOTOR_COUNT; i++) {
+    motor_set((motor_id_t)i, MOTOR_DIR_FORWARD, speed);
+  }
+}
+
+void motors_backwards(uint8_t speed) {
+  for (int i = 0; i < MOTOR_COUNT; i++) {
+    motor_set((motor_id_t)i, MOTOR_DIR_BACKWARD, speed);
+  }
+}
+
+void motors_turn_left(uint8_t speed) {
+  motor_set(MOTOR_FR, MOTOR_DIR_FORWARD, speed);
+  motor_set(MOTOR_RR, MOTOR_DIR_FORWARD, speed);
+  motor_set(MOTOR_FL, MOTOR_DIR_BACKWARD, speed);
+  motor_set(MOTOR_RL, MOTOR_DIR_BACKWARD, speed);
+}
+void motors_turn_right(uint8_t speed) {
+  motor_set(MOTOR_FR, MOTOR_DIR_BACKWARD, speed);
+  motor_set(MOTOR_RR, MOTOR_DIR_BACKWARD, speed);
+  motor_set(MOTOR_FL, MOTOR_DIR_FORWARD, speed);
+  motor_set(MOTOR_RL, MOTOR_DIR_FORWARD, speed);
+}
+
+void stop_all(void) {}
