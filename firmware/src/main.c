@@ -36,15 +36,14 @@ static esp_err_t i2c_bus_create(i2c_master_bus_handle_t* bus_handle) {
 
 void app_main() {
   vTaskDelay(pdMS_TO_TICKS(3000));
-  /*
+
   motors_init();
-  */
 
   buttons_init();
 
   infrared_init();
   //infrared_calibrate_analog(20, 5000);
-  ir_reading_t ir;
+  //ir_reading_t ir;
 
   ultrasonic_init();
 
@@ -53,16 +52,27 @@ void app_main() {
 
   i2c_master_dev_handle_t oled_handle;
   oled_init(bus_handle, &oled_handle);
-  /*
-   for (;;) {
 
-    infrared_read(&ir);
+  for (;;) {
 
-    printf("[IR] analog_raw: %4d | gray_value: %.2f | line_detected: %d || [ULTRASONIC] CM: %.2f\n",
-           ir.analog_raw, ir.gray_value, ir.line_detected, ultrasonic_get_cm());
-    vTaskDelay(pdMS_TO_TICKS(1000));
+    //infrared_read(&ir);
+
+    //printf("[IR] analog_raw: %4d | gray_value: %.2f | line_detected: %d || [ULTRASONIC] CM: %.2f\n",
+    //       ir.analog_raw, ir.gray_value, ir.line_detected, ultrasonic_get_cm());
+
+    motor_set(MOTOR_FR, MOTOR_DIR_FORWARD, 40);
+    vTaskDelay(pdMS_TO_TICKS(2000));
+    motor_set(MOTOR_FR, MOTOR_DIR_BACKWARD, 40);
+    vTaskDelay(pdMS_TO_TICKS(2000));
+
+    motor_set(MOTOR_FR, MOTOR_DIR_FORWARD, 90);
+    vTaskDelay(pdMS_TO_TICKS(2000));
+    motor_set(MOTOR_FR, MOTOR_DIR_BACKWARD, 90);
+    vTaskDelay(pdMS_TO_TICKS(2000));
+
+    motor_set(MOTOR_FR, MOTOR_DIR_FORWARD, 0);
+    vTaskDelay(pdMS_TO_TICKS(2000));
   }
- */
 
   RobotMode mode = menu_get_mode();
 

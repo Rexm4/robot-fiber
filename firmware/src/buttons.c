@@ -13,7 +13,7 @@
 #define BTN_DEBOUNCE_MS 50
 #define BTN_QUEUE_LEN   8
 
-static const char* TAG = "buttons";
+static const char* TAG = "BUTTONS";
 
 static QueueHandle_t s_evt_queue = NULL;
 
@@ -68,7 +68,7 @@ void buttons_init(void) {
     config.pin_bit_mask = (1ULL << s_btns[i].gpio);
     ESP_ERROR_CHECK(gpio_config(&config));
     ESP_ERROR_CHECK(gpio_isr_handler_add(s_btns[i].gpio, gpio_isr_handler, (void*)&s_btns[i]));
-    ESP_LOGI(TAG, "Botón GPIO %d registrado", s_btns[i].gpio);
+    ESP_LOGI(TAG, "Button GPIO%d registered", s_btns[i].gpio);
   }
 }
 

@@ -5,7 +5,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-#define IR_DIGITAL_PIN GPIO_NUM_14
+#define IR_DIGITAL_PIN GPIO_NUM_11
 #define IR_ADC_CHANNEL ADC_CHANNEL_9  // GPIO10
 #define IR_ADC_UNIT    ADC_UNIT_1
 #define IR_ADC_WIDTH   ADC_BITWIDTH_12  // 0 - 4095
@@ -24,7 +24,7 @@ typedef struct {
   bool line_detected;
 } ir_reading_t;
 
-void infrared_init();
+void infrared_init(void);
 
 void infrared_read(ir_reading_t* out);
 

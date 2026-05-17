@@ -12,7 +12,7 @@
 #define OLED_HEIGHT 64
 #define OLED_PAGES  (OLED_HEIGHT / 8)  // 8 pages of 8 rows
 
-esp_err_t oled_init(i2c_master_bus_handle_t bus_handle, i2c_master_dev_handle_t *dev_handle);
+esp_err_t oled_init(i2c_master_bus_handle_t bus_handle, i2c_master_dev_handle_t* dev_handle);
 
 void oled_clear();
 esp_err_t oled_flush(void);
